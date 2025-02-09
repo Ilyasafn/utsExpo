@@ -1,12 +1,11 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { Slot } from "expo-router";
+import { SessionProvider } from "../contexts/ctx";
 
-const LayoutPage = () => {
+export default function Root() {
+  // Set up the auth context and render our layout inside of it.
   return (
-    <View>
-      <Text>LayoutPage</Text>
-    </View>
+    <SessionProvider>
+      <Slot />
+    </SessionProvider>
   );
-};
-
-export default LayoutPage;
+}
