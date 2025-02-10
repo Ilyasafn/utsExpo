@@ -1,21 +1,37 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React, { useState } from "react";
+import { View, TouchableOpacity, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
 import Input from "@/components/Input";
-import { Octicons } from "@expo/vector-icons";
 
-const [searchText, setSearchText] = useState(" ");
+import CardResep from "@/components/CardResep";
+import { Link } from "expo-router";
 
+interface Resep {
+  id: number;
+  name: string;
+  image: string;
+}
 const ResepPage = () => {
+  const apiurl = "https://dummyjson.com/recipes";
+  const [resep, setResep] = useState<Resep[]>([]);
+
+  useEffect(() => {
+    fetch(apiurl)
+      .then((response) => response.json())
+      .then((data: { recipes: Resep[] }) => setResep(data.recipes));
+  }, []);
   return (
-    <View style={{ padding: 20 }}>
-      <Input leftIcon="search" placeholder="Cari resep" 
-      onChangeText={(text) => setSearchText(text)} value={searchText} />
-      {searchText && (
-        <TouchableOpacity onPress={() => setSearchText("")}>
-          <Octicons name="x" size={24} color="#000" />
-        </TouchableOpacity>
-      )}
-    </View>
+    <ScrollView>
+      <View style={{ padding: 20, gap: 10, alignContent: "stretch" }}>
+        <Input leftIcon="search" placeholder="Cari resep" />
+        {resep.map((item) => (
+          <Link href={"../resep/[id]"}>
+            <TouchableOpacity key={item.id}>
+              <CardResep gambar={item.image} judul={item.name} deskripsi="ini deskripsi makanan" mode="row" />
+            </TouchableOpacity>
+          </Link>
+        ))}
+      </View>
+    </ScrollView>
   );
 };
 

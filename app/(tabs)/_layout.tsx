@@ -1,13 +1,30 @@
-import { Text } from "react-native";
+import { Keyboard, Text } from "react-native";
 import { Redirect, Tabs } from "expo-router";
 import { useSession } from "../../contexts/ctx";
 import { Octicons } from "@expo/vector-icons";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { COLORS } from "@/constants/Colors";
+import { useEffect, useState } from "react";
 
 const queryClient = new QueryClient();
 
 export default function TabLayout() {
+  const [isTabBarVisible, setIsTabBarVisible] = useState(true);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
+      setIsTabBarVisible(false); // Sembunyikan tabBar saat keyboard muncul
+    });
+
+    const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", () => {
+      setIsTabBarVisible(true); // Tampilkan tabBar saat keyboard hilang
+    });
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   const { session, isLoading } = useSession();
 
   // You can keep the splash screen open, or render a loading screen like we do here.
@@ -26,7 +43,10 @@ export default function TabLayout() {
   // This layout can be deferred because it's not the root layout.
   return (
     <QueryClientProvider client={queryClient}>
-      <Tabs>
+      <Tabs
+        screenOptions={{
+          tabBarHideOnKeyboard: true,
+        }}>
         <Tabs.Screen
           name="index"
           options={{

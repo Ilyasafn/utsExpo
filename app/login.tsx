@@ -17,10 +17,8 @@ export default function SignIn() {
           <Image source={require("../assets/images/food.png")} style={{ width: 200, height: 200 }} />
         </View>
         <View style={{ gap: 8 }}>
-          <Title size={24} style={{ fontWeight: "bold" }}>
-            Selamat Datang
-          </Title>
-          <Paragraph size={14}>Silakan login untuk masuk ke akun anda. Pastikan anda menggunakan akun yang telah terdaftar.</Paragraph>
+          <Title style={{ fontWeight: "bold" }}>Selamat Datang</Title>
+          <Paragraph>Silakan login untuk masuk ke akun anda. Pastikan anda menggunakan akun yang telah terdaftar.</Paragraph>
         </View>
         <View style={{ gap: 10 }}>
           <Input leftIcon="mail" placeholder="username" />

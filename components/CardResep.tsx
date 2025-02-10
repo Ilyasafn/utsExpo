@@ -4,7 +4,7 @@ import React, { FC } from "react";
 interface ResepProps {
   gambar?: string | ImageSourcePropType;
   judul: string;
-  deskripsi: string;
+  deskripsi?: string;
   mode?: "column" | "row";
 }
 
@@ -12,6 +12,7 @@ const CardResep: FC<ResepProps> = ({ gambar, judul, deskripsi, mode = "column" }
   return (
     <View
       style={{
+        width: "100%",
         display: "flex",
         flex: mode === "column" ? 1 : 0,
         flexDirection: mode === "column" ? "column" : "row",

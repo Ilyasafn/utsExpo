@@ -4,8 +4,8 @@ import { COLORS } from "@/constants/Colors";
 
 interface AvatarProps {
   gambar?: string | ImageSourcePropType;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
 
 const Avatar: FC<AvatarProps> = ({ gambar, width, height }) => {
