@@ -1,37 +1,28 @@
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import Paragraph from "@/components/Paragraph";
 import CardResep from "@/components/CardResep";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { router } from "expo-router";
+import { Recipes } from "@/api/resep";
 
 interface Resep {
   id: number;
   name: string;
-  image: string;
+  description: string;
+  ingredients: string[];
+  steps: string[];
 }
 
 export default function Index() {
-  const apiurl = "https://dummyjson.com/recipes";
-  const [resep, setResep] = useState<Resep[]>([]);
+  const [recipes, setRecipes] = useState<Resep[]>([]);
 
   useEffect(() => {
-    fetch(apiurl)
-      .then((response) => response.json())
-      .then((data: { recipes: Resep[] }) => setResep(data.recipes));
+    async function fetchData() {
+      const data = await Recipes();
+      setRecipes(data);
+    }
+    fetchData();
   }, []);
-
-  // const resepData = [
-  //   {
-  //     id: 1,
-  //     judul: "Nasi Goreng Spesial",
-  //     deskripsi: "Nasi goreng dengan bumbu rempah pilihan.",
-  //   },
-  //   {
-  //     id: 2,
-  //     judul: "Sate Ayam Madura",
-  //     deskripsi: "Sate ayam dengan bumbu kacang khas Madura.",
-  //   },
-  // ];
 
   return (
     <ScrollView>
@@ -39,13 +30,13 @@ export default function Index() {
         <Paragraph style={{ fontWeight: "bold", fontSize: 14 }} color="#000">
           Rekomendasi resep hari ini
         </Paragraph>
-        {resep.map((item) => (
+        {recipes.map((item) => (
           <TouchableOpacity
             onPress={() => {
-              router.push("/resep/[id]");
+              router.push(`/resep/${item.id}`);
             }}
             key={item.id}>
-            <CardResep gambar={item.image} judul={item.name} deskripsi="ini deskripsi makanan" />
+            <CardResep name={item.name} description={item.description} gambar={require("@/assets/images/image 7.png")} />
           </TouchableOpacity>
         ))}
       </View>
